@@ -12,4 +12,9 @@
             <?php echo $article->createdAt(); ?>
         </small>
     </p>
+    <p>Likes: <?= $article->getLikes(); ?></p>
+    <form action="/articles/<?= $article->id(); ?>/like" method="post">
+        <button type="submit" name="like" value="1">Like</button>
+        <button type="submit" name="like" value="-1">Dislike</button>
+    </form>
 <?php endforeach; ?>

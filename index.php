@@ -31,13 +31,14 @@ function query(): QueryBuilder
     return database()->createQueryBuilder();
 }
 
-$dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
+$dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $namespace = '\App\Controllers\\';
 
     $r->addRoute('GET', '/', $namespace . 'ArticlesController@index');
 
     $r->addRoute('GET', '/articles', $namespace . 'ArticlesController@index');
     $r->addRoute('GET', '/articles/{id}', $namespace . 'ArticlesController@show');
+    $r->addRoute('POST', '/articles/{id}/like', $namespace . 'ArticlesController@like');
 });
 
 // Fetch method and URI from somewhere
