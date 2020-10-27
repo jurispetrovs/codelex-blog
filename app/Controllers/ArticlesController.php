@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Article;
+use App\Models\Comment;
 
 class ArticlesController
 {
@@ -42,6 +43,26 @@ class ArticlesController
             ->execute()
             ->fetchAssociative();
 
+        $commentsQuery = query()
+            ->select('*')
+            ->from('comments')
+            ->where('article_id = :articleId')
+            ->setParameter('articleId', (int)$vars['id'])
+            ->execute()
+            ->fetchAllAssociative();
+
+        $comments = [];
+
+        foreach ($commentsQuery as $comment) {
+            $comments[] = new Comment(
+                (int)$comment['id'],
+                $comment['article_id'],
+                $comment['name'],
+                $comment['comment'],
+                $comment['created_at']
+            );
+        }
+
         $article = new Article(
             (int)$articleQuery['id'],
             $articleQuery['title'],
@@ -60,6 +81,17 @@ class ArticlesController
         $articleQuery = query()
             ->update('articles')
             ->set("likes", "likes + {$like}")
+            ->where('id = :id')
+            ->setParameter('id', (int)$vars['id'])
+            ->execute();
+
+        header('Location: /');
+    }
+
+    public function delete(array $vars)
+    {
+        query()
+            ->delete('articles')
             ->where('id = :id')
             ->setParameter('id', (int)$vars['id'])
             ->execute();

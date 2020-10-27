@@ -39,10 +39,16 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/articles', $namespace . 'ArticlesController@index');
     $r->addRoute('GET', '/articles/{id}', $namespace . 'ArticlesController@show');
     $r->addRoute('POST', '/articles/{id}/like', $namespace . 'ArticlesController@like');
+
+    $r->addRoute('DELETE', '/articles/{id}', $namespace . 'ArticlesController@delete');
+
+    $r->addRoute('POST', '/articles/{id}/comments', $namespace . 'CommentsController@store');
+
+    $r->addRoute('DELETE', '/articles/{id}/comments/delete', $namespace . 'CommentsController@delete');
 });
 
 // Fetch method and URI from somewhere
-$httpMethod = $_SERVER['REQUEST_METHOD'];
+$httpMethod = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];
 
 // Strip query string (?foo=bar) and decode URI
