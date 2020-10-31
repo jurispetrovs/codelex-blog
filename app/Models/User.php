@@ -30,7 +30,7 @@ class User
         $this->id = $id;
     }
 
-    public static function create(array $data, string $referredBy = null): User
+    public static function create(array $data, int $referredBy = null): User
     {
         return new self(
             $data['name'],
