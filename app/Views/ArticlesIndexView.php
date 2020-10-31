@@ -6,6 +6,22 @@
 </head>
 <body>
     <h1>Articles</h1>
+    <?php if(isset($_SESSION['auth_id'])): ?>
+    <div class="authorization">
+        <form method="post" action="/logout">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    <?php else: ?>
+    <div class="authorization">
+        <form method="post" action="/register">
+            <button type="submit">Register</button>
+        </form>
+        <form method="post" action="/login">
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <?php endif; ?>
     <?php foreach ($articles as $article): ?>
         <hr>
         <h3>
@@ -24,7 +40,7 @@
             </small>
         </p>
         <p>Likes: <?= $article->getLikes(); ?></p>
-        <form action="/articles/<?= $article->id(); ?>/like" method="post">
+        <form method="post" action="/articles/<?= $article->id(); ?>/like">
             <button type="submit" name="like" value="1">Like</button>
             <button type="submit" name="like" value="-1">Dislike</button>
         </form>

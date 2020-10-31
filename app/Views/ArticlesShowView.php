@@ -11,7 +11,11 @@
     <small>
         <strong><?php echo $article->createdAt(); ?></strong>
     </small>
-
+    <p>
+        <?php foreach ($article->getTags() as $tag): ?>
+        <small><?php echo $tag; ?></small>
+        <?php endforeach; ?>
+    </p>
     <hr>
     <?php if (!empty($comments)): ?>
         <ul>
@@ -19,7 +23,7 @@
                 <li>
                     <?php echo $comment->getName() ?>: <?php echo $comment->getComment(); ?>
                     <small><strong>(<?php echo $comment->getCreatedAt(); ?>)</strong></small>
-                    <form action="/articles/<?= $article->id(); ?>/comments/delete" method="post">
+                    <form method="post" action="/articles/<?= $article->id(); ?>/comments/delete">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="id" value="<?php echo $comment->getId(); ?>">
                         <button type="submit" onclick="return confirm('Are you sure ?');">x</button>
@@ -32,7 +36,7 @@
     <?php endif; ?>
     <hr>
 
-    <form action="/articles/<?= $article->id(); ?>/comments" method="post">
+    <form method="post" action="/articles/<?= $article->id(); ?>/comments">
         <div>
             <label for="name"></label>
             <input type="text" id="name" name="name" class="commentator-name" placeholder="Name">

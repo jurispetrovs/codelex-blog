@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Tag;
 
 class ArticlesController
 {
@@ -11,6 +12,12 @@ class ArticlesController
 
     public function index()
     {
+        $articleTagQuery = query()
+            ->select('*')
+            ->from('article_tag')
+            ->execute()
+            ->fetchAllAssociative();
+
         $articlesQuery = query()
             ->select('*')
             ->from('articles')
@@ -26,15 +33,51 @@ class ArticlesController
                 $article['title'],
                 $article['content'],
                 $article['created_at'],
-                $article['likes']
+                $article['likes'],
+                $this->getTagsIdByArticleId($articleTagQuery, $article['id'])
             );
         }
 
         return require_once __DIR__ . '/../Views/ArticlesIndexView.php';
     }
 
+    private function getTagsIdByArticleId(array $articleTagQuery, $articleId): array
+    {
+        $tags = [];
+        foreach ($articleTagQuery as $articleTags) {
+            if ($articleId == $articleTags['article_id']) {
+                $tags[] = $articleTags['tag_id'];
+            }
+        }
+        return $tags;
+    }
+
+    private function getTagName(array $tagsId): array
+    {
+        $tagsNames = [];
+
+        foreach ($tagsId as $tagId)
+        {
+            $tagsNames[] = query()
+                ->select('name')
+                ->from('tags')
+                ->where('id = :tagId')
+                ->setParameter('tagId', (int)$tagId)
+                ->execute()
+                ->fetchAllAssociative();
+        }
+        var_dump($tagsNames);
+        return $tagsNames;
+    }
+
     public function show(array $vars)
     {
+        $articleTagQuery = query()
+            ->select('*')
+            ->from('article_tag')
+            ->execute()
+            ->fetchAllAssociative();
+
         $articleQuery = query()
             ->select('*')
             ->from('articles')
@@ -63,12 +106,19 @@ class ArticlesController
             );
         }
 
+        $articlesTagsQuery = query()
+            ->select('*')
+            ->from('article_tag')
+            ->execute()
+            ->fetchAllAssociative();
+
         $article = new Article(
             (int)$articleQuery['id'],
             $articleQuery['title'],
             $articleQuery['content'],
             $articleQuery['created_at'],
-            $articleQuery['likes']
+            $articleQuery['likes'],
+            $this->getTagsIdByArticleId($articleTagQuery, $articleQuery['id'])
         );
 
         return require_once __DIR__ . '/../Views/ArticlesShowView.php';

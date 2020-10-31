@@ -9,13 +9,15 @@ class Article
     private string $content;
     private string $createdAt;
     private int $likes;
+    private array $tags;
 
     public function __construct(
         int $id,
         string $title,
         string $content,
         string $createdAt,
-        int $likes
+        int $likes,
+        array $tags
     )
     {
         $this->id = $id;
@@ -23,6 +25,7 @@ class Article
         $this->content = $content;
         $this->createdAt = $createdAt;
         $this->likes = $likes;
+        $this->tags = $tags;
     }
 
     public function id(): int
@@ -48,5 +51,10 @@ class Article
     public function getLikes(): int
     {
         return $this->likes;
+    }
+
+    public function getTags(): array
+    {
+        return $this->tags;
     }
 }

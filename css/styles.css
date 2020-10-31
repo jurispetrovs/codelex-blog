@@ -27,3 +27,11 @@ form {
 ul {
     list-style: none;
 }
+
+.authorization {
+    text-align: right;
+}
+
+.register {
+    text-align: center;
+}
