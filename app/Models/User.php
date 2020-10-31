@@ -10,7 +10,7 @@ class User
     private string $email;
     private string $password;
     private string $referralCode;
-    private ?string $referredBy;
+    private ?int $referredBy;
     private ?int $id;
 
     public function __construct(
@@ -18,7 +18,7 @@ class User
         string $email,
         string $password,
         string $referralCode,
-        ?string $referredBy = null,
+        ?int $referredBy = null,
         ?int $id = null
     )
     {
