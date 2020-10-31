@@ -8,7 +8,7 @@
     <a href="/">Home</a>
     <div class="register">
         <h3>Create User</h3>
-        <form method="post" action="/register" novalidate>
+        <form method="post" action="/register<?php echo $referredBy ? '?r=' . $referredBy : null; ?>" novalidate>
             <label for="name">Name </label>
             <input type="text" name="name" id="name" placeholder="Name" required>
             <label for="email">E-mail </label>

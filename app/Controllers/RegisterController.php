@@ -16,6 +16,8 @@ class RegisterController
 
     public function index()
     {
+        $referredBy = $_GET['r'] ?? null;
+
         return require_once __DIR__ . '/../Views/RegisterIndexView.php';
     }
 
@@ -27,7 +29,7 @@ class RegisterController
 
         if ($validEmail && $validName && $validPassword) {
 
-            $referredBy = [];
+            $referredBy = null;
 
             if (isset($_GET['r'])) {
                 $referredBy = query()
